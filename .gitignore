@@ -1,0 +1,5 @@
+data/char_to_idx.json
+logs/
+model/
+*.pyc
+.DS_Store
