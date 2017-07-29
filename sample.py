@@ -20,16 +20,16 @@ def sample(epoch, header, num_chars):
 
 	sampled = [char_to_idx[c] for c in header]
 	for c in header[:-1]:
-		batch = np.zeros((1, 1, vocab_size))
-		batch[0, 0, char_to_idx[c]] = 1
+		batch = np.zeros((1, 1))
+		batch[0, 0] = char_to_idx[c]
 		model.predict_on_batch(batch)
 
 	for i in range(num_chars):
-		batch = np.zeros((1, 1, vocab_size))
+		batch = np.zeros((1, 1))
 		if sampled:
-			batch[0, 0, sampled[-1]] = 1
+			batch[0, 0] = sampled[-1]
 		else:
-			batch[0, 0, :] = np.ones(vocab_size) / vocab_size
+			batch[0, 0] = np.random.randint(vocab_size)
 		result = model.predict_on_batch(batch).ravel()
 		sample = np.random.choice(range(vocab_size), p=result)
 		sampled.append(sample)
