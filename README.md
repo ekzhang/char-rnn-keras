@@ -4,20 +4,20 @@ Multi-layer recurrent neural networks for training and sampling from texts, insp
 
 ### Requirements
 
-This code is written in Python 2, using the [Keras](https://keras.io) deep learning library. It also requires [HDF5](https://support.hdfgroup.org/HDF5/) and [h5py](http://www.h5py.org).
+This code is written in Python 2, and it requires the [Keras](https://keras.io) deep learning library.
 
 ### Usage
 
-All input data should be placed in the `data/` directory. The example `jigs.txt` is taken from the [Nottingham Music Database](http://abc.sourceforge.net/NMD/).
+All input data should be placed in the `data/` directory. The example `input.txt` is taken from the [Nottingham Music Database](http://abc.sourceforge.net/NMD/).
 
-To train the model (checkpoints by default every 10 epochs):
+To train the model with default settings:
 ```bash
-$ python train.py jigs.txt
+$ python train.py
 ```
 
 To sample the model:
 ```bash
-$ python sample.py 100 --seed X: --len 512
+$ python sample.py 100
 ```
 
-Training loss/accuracy is stored in `logs/training_log.txt`.
+Training loss/accuracy is stored in `logs/training_log.csv`.
