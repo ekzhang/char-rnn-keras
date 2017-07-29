@@ -52,7 +52,7 @@ def train(text, epochs):
 
 	T = np.asarray([char_to_idx[c] for c in text], dtype=np.int32)
 	steps_per_epoch = (len(text) / BATCH_SIZE - 1) / SEQ_LENGTH
-	log = TrainLogger('training_log.txt')
+	log = TrainLogger('training_log.csv')
 
 	for epoch in range(epochs):
 		print '\nEpoch {}/{}'.format(epoch + 1, epochs)
