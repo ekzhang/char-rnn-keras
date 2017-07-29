@@ -1,3 +1,4 @@
+import argparse
 import os
 import json
 import sys
@@ -38,7 +39,7 @@ def read_batches(T, vocab_size):
 				Y[batch_idx, i, T[batch_chars * batch_idx + start + i + 1]] = 1
 		yield X, Y
 
-def train(text, epochs):
+def train(text, epochs=100, save_freq=10):
 	char_to_idx = { ch: i for (i, ch) in enumerate(sorted(list(set(text)))) }
 	with open(os.path.join(DATA_DIR, 'char_to_idx.json'), 'w') as f:
 		json.dump(char_to_idx, f)
@@ -67,13 +68,18 @@ def train(text, epochs):
 
 		log.add_entry(np.average(losses), np.average(accs))
 
-		if (epoch + 1) % 10 == 0:
+		if (epoch + 1) % save_freq == 0:
 			save_weights(epoch + 1, model)
 			print 'Saved checkpoint to', 'weights.{}.h5'.format(epoch + 1)
 
 if __name__ == '__main__':
+	parser = argparse.ArgumentParser(description='Train the model on some text.')
+	parser.add_argument('--input', default='input.txt', help='name of the text file to train from')
+	parser.add_argument('--epochs', type=int, default=100, help='number of epochs to train for')
+	parser.add_argument('--freq', type=int, default=10, help='checkpoint save frequency')
+	args = parser.parse_args()
+
 	if not os.path.exists(LOG_DIR):
 		os.makedirs(LOG_DIR)
 
-	file = sys.argv[1]
-	model = train(open(os.path.join(DATA_DIR, file)).read(), 100)
+	model = train(open(os.path.join(DATA_DIR, args.input)).read(), args.epochs, args.save_freq)
