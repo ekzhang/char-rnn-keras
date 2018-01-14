@@ -82,4 +82,4 @@ if __name__ == '__main__':
 	if not os.path.exists(LOG_DIR):
 		os.makedirs(LOG_DIR)
 
-	model = train(open(os.path.join(DATA_DIR, args.input)).read(), args.epochs, args.save_freq)
+	model = train(open(os.path.join(DATA_DIR, args.input)).read(), args.epochs, args.freq)
