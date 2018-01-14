@@ -4,7 +4,7 @@ import json
 
 import numpy as np
 
-from model import build_model, load_epoch
+from model import build_model, load_weights
 
 DATA_DIR = './data'
 
@@ -14,8 +14,8 @@ def sample(epoch, header, num_chars):
     idx_to_char = { i: ch for (ch, i) in char_to_idx.items() }
     vocab_size = len(char_to_idx)
 
-    model = load_epoch(epoch)
-    model.summary()
+    model = build_model(1, 1, vocab_size)
+    load_weights(epoch, model)
 
     sampled = [char_to_idx[c] for c in header]
     for c in header[:-1]:
@@ -33,7 +33,7 @@ def sample(epoch, header, num_chars):
         sample = np.random.choice(range(vocab_size), p=result)
         sampled.append(sample)
 
-    print ''.join(idx_to_char[c] for c in sampled)
+    return ''.join(idx_to_char[c] for c in sampled)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Sample some text from the trained model.')

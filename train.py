@@ -4,7 +4,7 @@ import argparse
 
 import numpy as np
 
-from model import build_model, save_epoch
+from model import build_model, save_weights
 
 DATA_DIR = './data'
 LOG_DIR = './logs'
@@ -68,8 +68,8 @@ def train(text, epochs=100, save_freq=10):
         log.add_entry(np.average(losses), np.average(accs))
 
         if (epoch + 1) % save_freq == 0:
-            save_epoch(epoch + 1, model)
-            print 'Saved checkpoint to', 'model.{}.h5'.format(epoch + 1)
+            save_weights(epoch + 1, model)
+            print 'Saved checkpoint to', 'weights.{}.h5'.format(epoch + 1)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train the model on some text.')

@@ -5,14 +5,13 @@ from keras.layers import LSTM, Dropout, TimeDistributed, Dense, Activation, Embe
 
 MODEL_DIR = './model'
 
-def save_epoch(epoch, model):
+def save_weights(epoch, model):
     if not os.path.exists(MODEL_DIR):
         os.makedirs(MODEL_DIR)
-    model.save(os.path.join(MODEL_DIR, 'model.{}.h5'.format(epoch)))
+    model.save_weights(os.path.join(MODEL_DIR, 'weights.{}.h5'.format(epoch)))
 
-def load_epoch(epoch):
-    model = load_model(os.path.join(MODEL_DIR, 'model.{}.h5'.format(epoch)))
-    return model
+def load_weights(epoch, model):
+    model.load_weights(os.path.join(MODEL_DIR, 'weights.{}.h5'.format(epoch)))
 
 def build_model(batch_size, seq_len, vocab_size):
     model = Sequential()
