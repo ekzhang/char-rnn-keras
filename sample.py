@@ -7,6 +7,7 @@ import numpy as np
 from model import build_model, load_weights
 
 DATA_DIR = './data'
+MODEL_DIR = './model'
 
 def sample(epoch, header, num_chars):
     with open(os.path.join(DATA_DIR, 'char_to_idx.json')) as f:
@@ -16,6 +17,7 @@ def sample(epoch, header, num_chars):
 
     model = build_model(1, 1, vocab_size)
     load_weights(epoch, model)
+    model.save(os.path.join(MODEL_DIR, 'model.{}.h5'.format(epoch)))
 
     sampled = [char_to_idx[c] for c in header]
     for c in header[:-1]:
