@@ -6,8 +6,22 @@ import numpy as np
 
 from model import build_model, load_weights
 
+from keras.models import Sequential, load_model
+from keras.layers import LSTM, Dropout, TimeDistributed, Dense, Activation, Embedding
+
 DATA_DIR = './data'
 MODEL_DIR = './model'
+
+def build_sample_model(vocab_size):
+    model = Sequential()
+    model.add(Embedding(vocab_size, 512, batch_input_shape=(1, 1)))
+    for i in range(3):
+        model.add(LSTM(256, return_sequences=(i != 2), stateful=True))
+        model.add(Dropout(0.2))
+
+    model.add(Dense(vocab_size))
+    model.add(Activation('softmax'))
+    return model
 
 def sample(epoch, header, num_chars):
     with open(os.path.join(DATA_DIR, 'char_to_idx.json')) as f:
@@ -15,7 +29,7 @@ def sample(epoch, header, num_chars):
     idx_to_char = { i: ch for (ch, i) in char_to_idx.items() }
     vocab_size = len(char_to_idx)
 
-    model = build_model(1, 1, vocab_size)
+    model = build_sample_model(vocab_size)
     load_weights(epoch, model)
     model.save(os.path.join(MODEL_DIR, 'model.{}.h5'.format(epoch)))
 
