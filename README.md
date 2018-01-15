@@ -8,7 +8,7 @@ This code is written in Python 2, and it requires the [Keras](https://keras.io) 
 
 ### Usage
 
-All input data should be placed in the `data/` directory. The example `input.txt` is taken from the [Nottingham Music Database](http://abc.sourceforge.net/NMD/).
+All input data should be placed in the `data/` directory. The example `input.txt` is taken from the [Nottingham Dataset (Cleaned)](https://github.com/jukedeck/nottingham-dataset).
 
 To train the model with default settings:
 ```bash
