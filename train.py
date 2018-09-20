@@ -27,7 +27,7 @@ class TrainLogger(object):
 
 def read_batches(T, vocab_size):
     length = T.shape[0]
-    batch_chars = length / BATCH_SIZE
+    batch_chars = length // BATCH_SIZE
 
     for start in range(0, batch_chars - SEQ_LENGTH, SEQ_LENGTH):
         X = np.zeros((BATCH_SIZE, SEQ_LENGTH))
@@ -43,7 +43,7 @@ def train(text, epochs=100, save_freq=10):
     with open(os.path.join(DATA_DIR, 'char_to_idx.json'), 'w') as f:
         json.dump(char_to_idx, f)
 
-    idx_to_char = { i: ch for (ch, i) in char_to_idx.items() }
+    idx_to_char = { i: ch for (ch, i) in list(char_to_idx.items()) }
     vocab_size = len(char_to_idx)
 
     model = build_model(BATCH_SIZE, SEQ_LENGTH, vocab_size)
@@ -55,13 +55,13 @@ def train(text, epochs=100, save_freq=10):
     log = TrainLogger('training_log.csv')
 
     for epoch in range(epochs):
-        print '\nEpoch {}/{}'.format(epoch + 1, epochs)
+        print('\nEpoch {}/{}'.format(epoch + 1, epochs))
         
         losses, accs = [], []
 
         for i, (X, Y) in enumerate(read_batches(T, vocab_size)):
             loss, acc = model.train_on_batch(X, Y)
-            print 'Batch {}: loss = {}, acc = {}'.format(i + 1, loss, acc)
+            print('Batch {}: loss = {}, acc = {}'.format(i + 1, loss, acc))
             losses.append(loss)
             accs.append(acc)
 
@@ -69,7 +69,7 @@ def train(text, epochs=100, save_freq=10):
 
         if (epoch + 1) % save_freq == 0:
             save_weights(epoch + 1, model)
-            print 'Saved checkpoint to', 'weights.{}.h5'.format(epoch + 1)
+            print('Saved checkpoint to', 'weights.{}.h5'.format(epoch + 1))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Train the model on some text.')
