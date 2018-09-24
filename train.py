@@ -1,6 +1,9 @@
 import os
 import json
 import argparse
+import sys
+import logging
+import logging.handlers
 
 import numpy as np
 
@@ -11,6 +14,16 @@ LOG_DIR = './logs'
 
 BATCH_SIZE = 16
 SEQ_LENGTH = 64
+
+ch = logging.StreamHandler()
+ch.setLevel(logging.DEBUG)
+formatter = logging.Formatter(
+    '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+
+logger = logging.getLogger(os.path.splitext(os.path.basename(sys.argv[0]))[0])
+logger.addHandler(ch)
+logger.setLevel(logging.INFO)
 
 class TrainLogger(object):
     def __init__(self, file):
@@ -56,7 +69,6 @@ def train(text, epochs=100, save_freq=10):
 
     for epoch in range(epochs):
         print('\nEpoch {}/{}'.format(epoch + 1, epochs))
-        
         losses, accs = [], []
 
         for i, (X, Y) in enumerate(read_batches(T, vocab_size)):
@@ -66,6 +78,7 @@ def train(text, epochs=100, save_freq=10):
             accs.append(acc)
 
         log.add_entry(np.average(losses), np.average(accs))
+        logger.info("Passed epoch %d", epoch)
 
         if (epoch + 1) % save_freq == 0:
             save_weights(epoch + 1, model)
@@ -81,4 +94,7 @@ if __name__ == '__main__':
     if not os.path.exists(LOG_DIR):
         os.makedirs(LOG_DIR)
 
+    logger.info("Beginning to train...")
     train(open(os.path.join(DATA_DIR, args.input)).read(), args.epochs, args.freq)
+
+    logger.info("End of training.")
