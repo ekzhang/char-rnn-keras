@@ -12,6 +12,7 @@ from keras.layers import LSTM, Dropout, TimeDistributed, Dense, Activation, Embe
 DATA_DIR = './data'
 MODEL_DIR = './model'
 
+
 def build_sample_model(vocab_size):
     model = Sequential()
     model.add(Embedding(vocab_size, 512, batch_input_shape=(1, 1)))
@@ -23,8 +24,9 @@ def build_sample_model(vocab_size):
     model.add(Activation('softmax'))
     return model
 
+
 def sample(epoch, header, num_chars):
-    with open(os.path.join(DATA_DIR, 'char_to_idx.json')) as f:
+    with open(os.path.join(MODEL_DIR, 'char_to_idx.json')) as f:
         char_to_idx = json.load(f)
     idx_to_char = { i: ch for (ch, i) in list(char_to_idx.items()) }
     vocab_size = len(char_to_idx)

@@ -15,6 +15,7 @@ from keras.utils.vis_utils import plot_model
 
 DATA_DIR = './data'
 LOG_DIR = './logs'
+MODEL_DIR = './model'
 
 BATCH_SIZE = 16
 SEQ_LENGTH = 64
@@ -60,7 +61,7 @@ def read_batches(T, vocab_size):
 
 def train(text, epochs=100, save_freq=10):
     char_to_idx = {ch: i for (i, ch) in enumerate(sorted(list(set(text))))}
-    with open(os.path.join(DATA_DIR, 'char_to_idx.json'), 'w') as f:
+    with open(os.path.join(MODEL_DIR, 'char_to_idx.json'), 'w') as f:
         json.dump(char_to_idx, f)
 
     vocab_size = len(char_to_idx)
@@ -73,12 +74,12 @@ def train(text, epochs=100, save_freq=10):
                   optimizer='adam', metrics=['accuracy'])
 
     json.dump(json.loads(model.to_json()),
-              Path(DATA_DIR).joinpath('model.json').open('w'),
+              Path(MODEL_DIR).joinpath('model.json').open('w'),
               sort_keys=True,
               indent=1
               )
 
-    plot_model(model, to_file=os.path.join(DATA_DIR, 'model_plot.svg'), show_shapes=True, show_layer_names=True)
+    plot_model(model, to_file=os.path.join(MODEL_DIR, 'model_plot.svg'), show_shapes=True, show_layer_names=True)
 
     T = np.asarray([char_to_idx[c] for c in text], dtype=np.int32)
     steps_per_epoch = (len(text) / BATCH_SIZE - 1) / SEQ_LENGTH
