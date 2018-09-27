@@ -35,8 +35,9 @@ class TrainLogger(object):
     def __init__(self, file, resume_at=0):
         self.file = os.path.join(LOG_DIR, file)
         self.epochs = resume_at
-        with open(self.file, 'w') as f:
-            f.write('epoch,loss,acc\n')
+        if self.epochs == 0:
+            with open(self.file, 'w') as f:
+                f.write('epoch,loss,acc\n')
 
     def add_entry(self, loss, acc):
         self.epochs += 1
@@ -121,7 +122,7 @@ def train(text, epochs=100, save_freq=10, resume=False):
             accs.append(acc)
 
         log.add_entry(np.average(losses), np.average(accs))
-        logger.info("Passed epoch %d", epoch)
+        logger.info("Passed epoch %d", epoch+1)
 
         if (epoch + 1) % save_freq == 0:
             save_weights(epoch + 1, model)
