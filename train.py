@@ -38,6 +38,9 @@ class TrainLogger(object):
         if self.epochs == 0:
             with open(self.file, 'w') as f:
                 f.write('epoch,loss,acc\n')
+        else:
+            with open(self.file, 'a') as f:
+                f.write('resume training at epoch {}\n'.format(self.epochs))
 
     def add_entry(self, loss, acc):
         self.epochs += 1
