@@ -75,7 +75,6 @@ def train(text, epochs=100, save_freq=10, resume=False):
         load_weights(resume_epoch, model)
 
     T = np.asarray([char_to_idx[c] for c in text], dtype=np.int32)
-    steps_per_epoch = (len(text) / BATCH_SIZE - 1) / SEQ_LENGTH
     log = TrainLogger('training_log.csv', resume_epoch)
 
     for epoch in range(resume_epoch, epochs):
