@@ -1,6 +1,4 @@
-data/char_to_idx.json
 logs/
 model/
-.ipynb_checkpoints
 *.pyc
 .DS_Store

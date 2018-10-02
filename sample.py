@@ -1,17 +1,15 @@
 import argparse
-import os
 import json
+import os
 
 import numpy as np
-
-from model import build_model, load_weights
-
 from keras.models import Sequential, load_model
 from keras.layers import LSTM, Dropout, TimeDistributed, Dense, Activation, Embedding
 
+from model import build_model, load_weights
+
 DATA_DIR = './data'
 MODEL_DIR = './model'
-
 
 def build_sample_model(vocab_size):
     model = Sequential()
@@ -24,9 +22,8 @@ def build_sample_model(vocab_size):
     model.add(Activation('softmax'))
     return model
 
-
 def sample(epoch, header, num_chars):
-    with open(os.path.join(MODEL_DIR, 'char_to_idx.json')) as f:
+    with open(os.path.join(MODEL_DIR, 'char_to_idx.json'), 'r') as f:
         char_to_idx = json.load(f)
     idx_to_char = { i: ch for (ch, i) in list(char_to_idx.items()) }
     vocab_size = len(char_to_idx)
