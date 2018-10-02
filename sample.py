@@ -12,6 +12,7 @@ from keras.layers import LSTM, Dropout, TimeDistributed, Dense, Activation, Embe
 DATA_DIR = './data'
 MODEL_DIR = './model'
 
+
 def build_sample_model(vocab_size):
     model = Sequential()
     model.add(Embedding(vocab_size, 512, batch_input_shape=(1, 1)))
@@ -23,10 +24,11 @@ def build_sample_model(vocab_size):
     model.add(Activation('softmax'))
     return model
 
+
 def sample(epoch, header, num_chars):
-    with open(os.path.join(DATA_DIR, 'char_to_idx.json')) as f:
+    with open(os.path.join(MODEL_DIR, 'char_to_idx.json')) as f:
         char_to_idx = json.load(f)
-    idx_to_char = { i: ch for (ch, i) in char_to_idx.items() }
+    idx_to_char = { i: ch for (ch, i) in list(char_to_idx.items()) }
     vocab_size = len(char_to_idx)
 
     model = build_sample_model(vocab_size)
@@ -46,7 +48,7 @@ def sample(epoch, header, num_chars):
         else:
             batch[0, 0] = np.random.randint(vocab_size)
         result = model.predict_on_batch(batch).ravel()
-        sample = np.random.choice(range(vocab_size), p=result)
+        sample = np.random.choice(list(range(vocab_size)), p=result)
         sampled.append(sample)
 
     return ''.join(idx_to_char[c] for c in sampled)
@@ -58,4 +60,4 @@ if __name__ == '__main__':
     parser.add_argument('--len', type=int, default=512, help='number of characters to sample (default 512)')
     args = parser.parse_args()
 
-    print sample(args.epoch, args.seed, args.len)
+    print(sample(args.epoch, args.seed, args.len))
