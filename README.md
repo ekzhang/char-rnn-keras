@@ -22,4 +22,4 @@ To sample the model at epoch 100:
 $ python sample.py 100
 ```
 
-Training loss/accuracy is stored in `logs/training_log.csv`. Model results, including a graphical dump of the model and intermediate model weights, are stored in the `model` directory. This same directory is used by `sample.py` for loading the model after training.
+Training loss/accuracy is stored in `logs/training_log.csv`. Model results, including intermediate model weights during training, are stored in the `model` directory. These are also used by `sample.py` for sampling.
